@@ -125,7 +125,7 @@ param documentIntelligenceResourceGroupName string = '' // Set in main.parameter
 // Limited regions for new version:
 // https://learn.microsoft.com/azure/ai-services/document-intelligence/concept-layout
 @description('Location for the Document Intelligence resource group')
-@allowed(['eastus', 'westus2', 'westeurope'])
+@allowed(['eastus', 'westus2', 'westeurope', 'westus'])
 @metadata({
   azd: {
     type: 'location'
@@ -774,7 +774,8 @@ module speech 'br/public:avm/res/cognitive-services/account:0.7.2' = if (useSpee
     sku: speechServiceSkuName
   }
 }
-module searchService 'core/search/search-services.bicep' = {
+
+module searchService 'core/search/search-services.bicep' = if (empty(searchServiceName)) {
   name: 'search-service'
   scope: searchServiceResourceGroup
   params: {
